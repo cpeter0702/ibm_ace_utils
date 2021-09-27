@@ -1,0 +1,93 @@
+
+
+CREATE COMPUTE MODULE getDocumentByCompositionId_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- filter specific objects to temp node
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.JSON.Data.entry.*[]) + 1;
+		WHILE I < J DO
+			IF InputRoot.JSON.Data.entry.[I].resource.resourceType = 'Composition' THEN
+			   	SET OutputRoot.JSON.Data.tempComposition = InputRoot.JSON.Data.entry.*[I];
+			ELSEIF  InputRoot.JSON.Data.entry.[I].resource.resourceType = 'Patient' THEN
+				SET OutputRoot.JSON.Data.tempPatient = InputRoot.JSON.Data.entry.*[I];
+			ELSEIF  InputRoot.JSON.Data.entry.[I].resource.resourceType = 'Practitioner' THEN
+				SET OutputRoot.JSON.Data.tempPractitioner = InputRoot.JSON.Data.entry.*[I];
+			ELSEIF  InputRoot.JSON.Data.entry.[I].resource.resourceType = 'Organization' THEN
+				SET OutputRoot.JSON.Data.tempOrganization = InputRoot.JSON.Data.entry.*[I];
+			ELSEIF  InputRoot.JSON.Data.entry.[I].resource.resourceType = 'Observation' THEN
+				SET OutputRoot.JSON.Data.tempObservation = InputRoot.JSON.Data.entry.*[I];	
+			END IF;	
+			
+			SET I = I + 1;
+		END WHILE;
+		
+		-- set parameters of Bundle Frame
+		SET OutputRoot.JSON.Data.resourceType = 'Bundle';
+		SET OutputRoot.JSON.Data.identifier.system = InputRoot.JSON.Data.identifier.system;
+		SET OutputRoot.JSON.Data.identifier.value = InputRoot.JSON.Data.identifier.value;
+		SET OutputRoot.JSON.Data.type = InputRoot.JSON.Data.type;
+		SET OutputRoot.JSON.Data.timestamp = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'IU');
+		
+		-- composition
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1] = OutputRoot.JSON.Data.tempComposition;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].fullUrl = null;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.meta = null;
+		
+		-- organization
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.resourceType = OutputRoot.JSON.Data.tempOrganization.resource.resourceType;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.id = OutputRoot.JSON.Data.tempOrganization.resource.id;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.(JSON.Array)identifier.Item[1].system 
+				= OutputRoot.JSON.Data.tempOrganization.resource.identifier.[1].system;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.(JSON.Array)identifier.Item[1].value 
+				= OutputRoot.JSON.Data.tempOrganization.resource.identifier.[1].value;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.name 
+				= OutputRoot.JSON.Data.tempOrganization.resource.name;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.(JSON.Array)address.Item[1].country 
+				= OutputRoot.JSON.Data.tempOrganization.resource.address.[2].country;
+
+		-- patient
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.resourceType = OutputRoot.JSON.Data.tempPatient.resource.resourceType;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.id = OutputRoot.JSON.Data.tempPatient.resource.id;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.(JSON.Array)identifier.Item[1].system = OutputRoot.JSON.Data.tempPatient.resource.identifier.[1].system;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.(JSON.Array)identifier.Item[1].value = OutputRoot.JSON.Data.tempPatient.resource.identifier.[1].value;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.(JSON.Array)name = OutputRoot.JSON.Data.tempPatient.resource.name;
+		
+		DECLARE name_i INTEGER 1;
+		DECLARE name_j INTEGER;
+		SET name_j = CARDINALITY(OutputRoot.JSON.Data.entry.[3].resource.name.*[]) + 1;
+		WHILE name_i < name_j DO
+			SET OutputRoot.JSON.Data.entry.[3].resource.name.[name_i].use = null; 
+			SET OutputRoot.JSON.Data.entry.[3].resource.name.[name_i].text = null;
+			SET name_i = name_i + 1;
+		END WHILE;
+		
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.birthDate = OutputRoot.JSON.Data.tempPatient.resource.birthDate;
+
+		-- observation
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.resourceType = OutputRoot.JSON.Data.tempObservation.resource.resourceType;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.id = OutputRoot.JSON.Data.tempObservation.resource.id;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.status = OutputRoot.JSON.Data.tempObservation.resource.status;
+		
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.code.(JSON.Array)coding.Item[1] 
+				= OutputRoot.JSON.Data.tempObservation.resource.code.coding.[1];
+		
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.effectivePeriod	= OutputRoot.JSON.Data.tempObservation.resource.effectivePeriod;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.(JSON.Array)performer = OutputRoot.JSON.Data.tempObservation.resource.performer;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.valueString
+				= OutputRoot.JSON.Data.tempObservation.resource.valueString;
+		
+		-- clean temp nodes
+		
+		SET OutputRoot.JSON.Data.tempComposition = null;
+		SET OutputRoot.JSON.Data.tempPatient = null;
+		SET OutputRoot.JSON.Data.tempPractitioner = null;
+		SET OutputRoot.JSON.Data.tempOrganization = null;
+		SET OutputRoot.JSON.Data.tempObservation = null;
+		
+		RETURN TRUE;
+	END;
+END MODULE;
+
+

@@ -1,0 +1,10 @@
+
+
+CREATE COMPUTE MODULE testFlow_Compute3
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- SET OutputRoot = InputRoot;
+		-- THROW USER EXCEPTION;	
+		THROW USER EXCEPTION CATALOG 'MyCatalog' MESSAGE 1234 VALUES ('Invoice number too low', OutputRoot.JSON.Data.Msg);
+	END;
+END MODULE;

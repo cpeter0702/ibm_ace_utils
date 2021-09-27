@@ -6,5 +6,8 @@
 	<classpathentry kind="var" path="JCN_HOME/jplugin2.jar"/>
 	<classpathentry kind="var" path="COMMON_CLASSES_HOME/IntegrationAPI.jar"/>
 	<classpathentry kind="con" path="com.ibm.etools.mft.uri.classpath.MBProjectReference"/>
+	<classpathentry kind="lib" path="/FHIR_Utils/CipherHelper.jar"/>
+	<classpathentry kind="lib" path="/FHIR_Utils/commons-lang3-3.12.0.jar"/>
+	<classpathentry kind="lib" path="/FHIR_Utils/commons-codec-1.15.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

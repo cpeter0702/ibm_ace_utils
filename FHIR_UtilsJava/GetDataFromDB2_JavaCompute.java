@@ -20,13 +20,15 @@ public class GetDataFromDB2_JavaCompute extends MbJavaComputeNode {
 	    // create new message
 	    MbMessage outMessage = new MbMessage(inMessage);
 	    MbMessageAssembly outAssembly = new MbMessageAssembly(inAssembly,outMessage);
+	    Connection conn = null;
+	    Statement stmt = null;
 		try {
 
 			// Obtain a java.sql.Connection using a JDBC Type4 datasource
 	        // This example uses a Policy of type JDBCProviders called "MyJDBCPolicy" in Policy Project "MyPolicies"  
-	        Connection conn = getJDBCType4Connection("{MyPolicies}:DB2Policy", JDBC_TransactionType.MB_TRANSACTION_AUTO);
+	        conn = getJDBCType4Connection("{MyPolicies}:OraclePolicy", JDBC_TransactionType.MB_TRANSACTION_AUTO);
 	        // Example of using the Connection to create a java.sql.Statement 
-	        Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);	        
+	        stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);	        
 	        MbElement dataElement = inMessage.getRootElement().getLastChild().getFirstChild();	        
 	        // Executes the given SQL statement, which may be an INSERT, UPDATE, or DELETE statement
 	        
@@ -46,6 +48,14 @@ public class GetDataFromDB2_JavaCompute extends MbJavaComputeNode {
 			// Consider replacing Exception with type(s) thrown by user code
 			// Example handling ensures all exceptions are re-thrown to be handled in the flow
 			throw new MbUserException(this, "evaluate()", "", "", sqx.toString(), null);
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
 		}
 		out.propagate(outAssembly);
 

@@ -1,0 +1,44 @@
+
+
+CREATE COMPUTE MODULE createComposition_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- check the details for each resource
+		--SET OutputRoot.JSON.Data.Message.Patient = InputLocalEnvironment.Variables.Patient;
+		--SET OutputRoot.JSON.Data.Message.Organization = InputLocalEnvironment.Variables.Organization;
+		--SET OutputRoot.JSON.Data.Message.Immunization = InputLocalEnvironment.Variables.Immunization;
+	 	--SET OutputRoot.JSON.Data.Message.Practitioner = InputLocalEnvironment.Variables.Practitioner;
+	 	--SET OutputRoot.JSON.Data.Message.Observation = InputLocalEnvironment.Variables.Observation;
+		
+		-- Create Composition Json
+		CALL CreateCompositionJson();
+		-- SET OutputRoot.HTTPRequestHeader."Authorization" = 'Basic ZmhpcnVzZXI6Y2hhbmdlLXBhc3N3b3Jk';
+		-- SET OutputRoot.HTTPRequestHeader."Accept" = 'application/json';
+		
+		-- override the URL for getting Document
+		-- SET OutputLocalEnvironment.Destination.HTTP.RequestURL 
+		-- 		= 'https://192.168.111.204:9443/fhir-server/api/v4/Composition';
+        return TRUE;
+	END;
+	
+	CREATE PROCEDURE CreateCompositionJson() BEGIN
+		
+		SET OutputRoot.JSON.Data.resourceType = 'Composition';
+        SET OutputRoot.JSON.Data.status = 'final';
+        SET OutputRoot.JSON.Data.type.(JSON.Array)coding.Item[1].system = 'http://loinc.org';
+        SET OutputRoot.JSON.Data.type.(JSON.Array)coding.Item[1].code = 'LP6464-4';
+        SET OutputRoot.JSON.Data.type.(JSON.Array)coding.Item[1].display = 'Nucleic acid amplification with probe detection';
+        
+        SET OutputRoot.JSON.Data.subject.reference = 'Patient/' || InputLocalEnvironment.Variables.Patient.Data.entry.Item.resource.id;
+        SET OutputRoot.JSON.Data.date = InputLocalEnvironment.Variables.Patient.Data.entry.Item.resource.meta.lastUpdated;
+        SET OutputRoot.JSON.Data.(JSON.Array)author.Item[1].reference = 'Practitioner/' || InputLocalEnvironment.Variables.Practitioner.JSON.Data.entry.Item.resource.id;
+        SET OutputRoot.JSON.Data.(JSON.Array)author.Item[1].display = InputLocalEnvironment.Variables.Practitioner.JSON.Data.entry.Item.resource.name.Item.family;
+        SET OutputRoot.JSON.Data.title = 'PCR Certificate' || InputLocalEnvironment.Variables.Patient.Data.entry.Item.resource.meta.lastUpdated;
+
+        SET OutputRoot.JSON.Data.custodian.reference = 'Organization/' || InputLocalEnvironment.Variables.Organization.JSON.Data.entry.Item.resource.id;
+        SET OutputRoot.JSON.Data.(JSON.Array)section.Item[1].(JSON.Array)entry.Item[1].reference = 'Patient/' || InputLocalEnvironment.Variables.Patient.Data.entry.Item.resource.id;
+        SET OutputRoot.JSON.Data.(JSON.Array)section.Item[1].(JSON.Array)entry.Item[2].reference = 'Observation/' || InputLocalEnvironment.Variables.Observation.JSON.Data.entry.Item.resource.id;
+        SET OutputRoot.JSON.Data.(JSON.Array)section.Item[1].(JSON.Array)entry.Item[3].reference = 'Organization/' || InputLocalEnvironment.Variables.Organization.JSON.Data.entry.Item.resource.id;
+	END;
+
+END MODULE;

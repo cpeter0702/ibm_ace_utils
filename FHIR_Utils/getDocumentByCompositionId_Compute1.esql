@@ -1,0 +1,11 @@
+
+
+CREATE COMPUTE MODULE getDocumentByCompositionId_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot = InputRoot;
+		SET OutputRoot.JSON.Data.id = OutputRoot.JSON.Data.compositionId;
+		RETURN TRUE;
+	END;
+
+END MODULE;

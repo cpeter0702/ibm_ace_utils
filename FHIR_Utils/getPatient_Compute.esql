@@ -1,0 +1,11 @@
+
+
+CREATE COMPUTE MODULE getPatient_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET InputLocalEnvironment.Variables.Patient = InputRoot.JSON;
+		SET OutputRoot = InputRoot;
+		RETURN TRUE;
+	END;
+
+END MODULE;

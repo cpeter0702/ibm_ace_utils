@@ -1,0 +1,39 @@
+
+
+CREATE COMPUTE MODULE createDocument_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- get the lastest composition ID
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER CARDINALITY(InputRoot.JSON.Data.entry.*[]) + 1;
+		DECLARE latestRecordNum INTEGER J;
+		DECLARE preDate TIMESTAMP;
+		DECLARE thisDate TIMESTAMP;
+		SET preDate = CAST (InputRoot.JSON.Data.entry.[1].resource.meta.lastUpdated AS TIMESTAMP FORMAT 'IU');
+		WHILE I < J DO
+			SET thisDate = CAST (InputRoot.JSON.Data.entry.[I].resource.meta.lastUpdated AS TIMESTAMP FORMAT 'IU');
+			
+			IF preDate < thisDate THEN
+			   	SET preDate = thisDate;
+				SET latestRecordNum = I;
+			END IF;	
+				
+			SET I = I + 1;
+		END WHILE;
+		
+		SET OutputRoot.JSON.Data.compositionID = InputRoot.JSON.Data.entry.[latestRecordNum].id;
+		-- header setting
+		SET OutputRoot.HTTPRequestHeader."Authorization" = 'Basic ZmhpcnVzZXI6Y2hhbmdlLXBhc3N3b3Jk';
+		SET OutputRoot.HTTPRequestHeader."Accept" = 'application/json';
+		
+		-- override the URL for getting Document
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL 
+		 		= 'https://192.168.111.204:9443/fhir-server/api/v4/Composition/' || InputRoot.JSON.Data.entry.[latestRecordNum].id || '/$document';
+		-- SET OutputLocalEnvironment.Destination.HTTP.RequestURL 
+		--		= 'https://localhost:9443/fhir-server/api/v4/Composition/' || InputRoot.JSON.Data.entry.[latestRecordNum].id || '/$document';
+		
+		RETURN TRUE;
+	END;
+	
+	
+END MODULE;

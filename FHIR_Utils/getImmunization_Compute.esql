@@ -1,0 +1,11 @@
+
+
+CREATE COMPUTE MODULE getImmunization_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET InputLocalEnvironment.Variables.Immunization = InputRoot;
+		SET OutputRoot = InputRoot;
+		RETURN TRUE;
+	END;
+
+END MODULE;

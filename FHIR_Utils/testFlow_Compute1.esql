@@ -1,0 +1,11 @@
+
+
+CREATE COMPUTE MODULE testFlow_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot = InputRoot;
+		-- SET OutputRoot.JSON.Data.Message = '5555';
+		RETURN TRUE;
+	END;
+
+END MODULE;

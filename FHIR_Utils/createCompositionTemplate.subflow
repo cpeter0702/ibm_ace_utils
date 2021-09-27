@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:getObservation.subflow="getObservation.subflow" xmlns:getOrganization.subflow="getOrganization.subflow" xmlns:getPatient.subflow="getPatient.subflow" xmlns:getPractitioner.subflow="getPractitioner.subflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="createCompositionTemplate.subflow" nsPrefix="createCompositionTemplate.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="createCompositionTemplate" bundleName="createCompositionTemplate" pluginId="FHIR_Utils"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/FHIR_Utils/icons/full/obj16/createCompositionTemplate.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/FHIR_Utils/icons/full/obj30/createCompositionTemplate.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="21,151">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="createCompositionTemplate" pluginId="FHIR_Utils"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="852,149">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="createCompositionTemplate" pluginId="FHIR_Utils"/>
+      </nodes>
+      <nodes xmi:type="getPatient.subflow:FCMComposite_1" xmi:id="FCMComposite_1_1" location="119,157">
+        <translation xmi:type="utility:ConstantString" string="getPatient"/>
+      </nodes>
+      <nodes xmi:type="getOrganization.subflow:FCMComposite_1" xmi:id="FCMComposite_1_2" location="230,157">
+        <translation xmi:type="utility:ConstantString" string="getOrganization"/>
+      </nodes>
+      <nodes xmi:type="getPractitioner.subflow:FCMComposite_1" xmi:id="FCMComposite_1_3" location="384,157">
+        <translation xmi:type="utility:ConstantString" string="getPractitioner"/>
+      </nodes>
+      <nodes xmi:type="getObservation.subflow:FCMComposite_1" xmi:id="FCMComposite_1_4" location="527,157">
+        <translation xmi:type="utility:ConstantString" string="getObservation"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="675,157" computeExpression="esql://routine/#createComposition_Compute.Main" computeMode="destinationAndMessage">
+        <translation xmi:type="utility:ConstantString" string="Compute"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

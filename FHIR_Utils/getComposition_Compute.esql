@@ -1,0 +1,11 @@
+
+
+CREATE COMPUTE MODULE getComposition_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET InputLocalEnvironment.Variables.Composition = InputRoot;
+		SET OutputRoot = InputRoot;
+		RETURN TRUE;
+	END;
+
+END MODULE;

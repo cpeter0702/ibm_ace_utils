@@ -1,0 +1,90 @@
+
+
+CREATE COMPUTE MODULE testFlow_Compute2
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.JSON.Data.resourceType = 'Bundle';
+		SET OutputRoot.JSON.Data.identifier.system = InputRoot.JSON.Data.identifier.system;
+		SET OutputRoot.JSON.Data.identifier.value = InputRoot.JSON.Data.identifier.value;
+		-- SET OutputRoot.JSON.Data.identifier.period.start = InputRoot.JSON.Data.identifier.period.start;
+		SET OutputRoot.JSON.Data.type = InputRoot.JSON.Data.type;
+		
+		-- composition
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.resourceType = InputRoot.JSON.Data.entry.[1].resource.resourceType;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.id = InputRoot.JSON.Data.entry.[1].resource.id;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.status = InputRoot.JSON.Data.entry.[1].resource.status;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.type.(JSON.Array)coding.Item[1].system 
+				= InputRoot.JSON.Data.entry.[1].resource.type.coding.[1].system;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.type.(JSON.Array)coding.Item[1].code
+				= InputRoot.JSON.Data.entry.[1].resource.type.coding.[1].code; 
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.type.(JSON.Array)coding.Item[1].display
+				= InputRoot.JSON.Data.entry.[1].resource.type.coding.[1].display;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.subject.reference
+				= InputRoot.JSON.Data.entry.[1].resource.subject.reference;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.date
+				= InputRoot.JSON.Data.entry.[1].resource.date;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.(JSON.Array)author.Item[1].reference
+				= InputRoot.JSON.Data.entry.[1].resource.author.[1].reference;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.(JSON.Array)author.Item[1].display
+				= InputRoot.JSON.Data.entry.[1].resource.author.[1].display;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.title
+				= InputRoot.JSON.Data.entry.[1].resource.title;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.custodian.reference
+				= InputRoot.JSON.Data.entry.[1].resource.custodian.reference;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.(JSON.Array)section.Item[1].(JSON.Array)entry.Item[1].reference
+				= InputRoot.JSON.Data.entry.[1].resource.section.[1].entry.[1].reference;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.(JSON.Array)section.Item[1].(JSON.Array)entry.Item[2].reference
+				= InputRoot.JSON.Data.entry.[1].resource.section.[1].entry.[2].reference;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[1].resource.(JSON.Array)section.Item[1].(JSON.Array)entry.Item[3].reference
+				= InputRoot.JSON.Data.entry.[1].resource.section.[1].entry.[3].reference;
+		
+		-- organization
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.resourceType = InputRoot.JSON.Data.entry.[4].resource.resourceType;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.id = InputRoot.JSON.Data.entry.[4].resource.id;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.identifier.system = InputRoot.JSON.Data.entry.[4].resource.identifier.[1].system;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.identifier.value = InputRoot.JSON.Data.entry.[4].resource.identifier.[1].value;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.name = InputRoot.JSON.Data.entry.[4].resource.name;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[2].resource.address.country = InputRoot.JSON.Data.entry.[4].resource.address.[2].country;
+		
+		-- patient
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.resourceType = InputRoot.JSON.Data.entry.[2].resource.resourceType;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.id = InputRoot.JSON.Data.entry.[2].resource.id;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.identifier.system = InputRoot.JSON.Data.entry.[2].resource.identifier.[1].system;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.identifier.value = InputRoot.JSON.Data.entry.[2].resource.identifier.[1].value;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.(JSON.Array)name.Item[1].text 
+				= InputRoot.JSON.Data.entry.[2].resource.name.[1].family || InputRoot.JSON.Data.entry.[2].resource.name.[1].given.[1];
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.(JSON.Array)name.Item[1].family 
+				= InputRoot.JSON.Data.entry.[2].resource.name.[1].family;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.(JSON.Array)name.Item[1].(JSON.Array)given.Item[1]
+				= InputRoot.JSON.Data.entry.[2].resource.name.[1].given.[1];
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.(JSON.Array)name.Item[2].text 
+				= InputRoot.JSON.Data.entry.[2].resource.name.[2].family || ' ' || InputRoot.JSON.Data.entry.[2].resource.name.[2].given.[1];
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.(JSON.Array)name.Item[2].family 
+				= InputRoot.JSON.Data.entry.[2].resource.name.[2].family;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.(JSON.Array)name.Item[2].(JSON.Array)given.Item[1]
+				= InputRoot.JSON.Data.entry.[2].resource.name.[2].given.[1];
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[3].resource.birthdate = InputRoot.JSON.Data.entry.[2].resource.birthDate;
+		
+		-- observation
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.resourceType = InputRoot.JSON.Data.entry.[5].resource.resourceType;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.id = InputRoot.JSON.Data.entry.[5].resource.id;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.status = InputRoot.JSON.Data.entry.[5].resource.status;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.code.(JSON.Array)coding.Item[1].system 
+				= InputRoot.JSON.Data.entry.[5].resource.code.coding.[1].system;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.code.(JSON.Array)coding.Item[1].code
+				= InputRoot.JSON.Data.entry.[5].resource.code.coding.[1].code; 
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.code.(JSON.Array)coding.Item[1].display
+				= InputRoot.JSON.Data.entry.[5].resource.code.coding.[1].display;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.effectivePeriod.start
+				= InputRoot.JSON.Data.entry.[5].resource.effectivePeriod.start;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.effectivePeriod.end
+				= InputRoot.JSON.Data.entry.[5].resource.effectivePeriod.end;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.(JSON.Array)performer.Item[1].reference
+				= InputRoot.JSON.Data.entry.[5].resource.performer.[1].reference;
+		SET OutputRoot.JSON.Data.(JSON.Array)entry.Item[4].resource.valueString
+				= InputRoot.JSON.Data.entry.[5].resource.valueString;
+		
+		RETURN TRUE;
+	END;
+
+END MODULE;

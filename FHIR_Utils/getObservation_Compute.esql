@@ -1,0 +1,12 @@
+
+
+CREATE COMPUTE MODULE getObservation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET InputLocalEnvironment.Variables.Observation = InputRoot;
+		SET OutputRoot = InputRoot;
+		RETURN TRUE;
+	END;
+
+END MODULE;
+

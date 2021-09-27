@@ -1,0 +1,17 @@
+
+
+CREATE COMPUTE MODULE getCompletedDocument_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN	
+		SET OutputRoot.JSON.Data.iid = InputRoot.JSON.Data.compositionId;
+		SET OutputRoot.HTTPRequestHeader."Authorization" = 'Basic ZmhpcnVzZXI6Y2hhbmdlLXBhc3N3b3Jk';
+		SET OutputRoot.HTTPRequestHeader."Accept" = 'application/json';
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL 
+				-- = 'https://localhost:9443/fhir-server/api/v4/Composition/' || InputRoot.JSON.Data.compositionId ||'/$document';
+				-- = 'https://192.168.111.204:9443/fhir-server/api/v4/Composition/' || InputRoot.JSON.Data.compositionId ||'/$document';
+				= 'https://192.168.111.204:9443/fhir-server/api/v4/Composition/17be23f8af3-543d105a-792d-4656-9279-759bddf76014/$document';
+
+		RETURN TRUE;
+	END;
+
+END MODULE;

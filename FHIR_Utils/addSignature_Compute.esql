@@ -1,0 +1,25 @@
+
+
+CREATE COMPUTE MODULE addSignature_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		SET OutputRoot = InputRoot;
+
+		SET OutputRoot.JSON.Data.signature.(JSON.Array)type.Item[1].system = 'http://loinc.org';
+		SET OutputRoot.JSON.Data.signature.(JSON.Array)type.Item[1].code = 'FHIR';
+		SET OutputRoot.JSON.Data.signature.(JSON.Array)type.Item[1].display = 'composition document';
+		SET OutputRoot.JSON.Data.signature.when = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'IU');
+		SET OutputRoot.JSON.Data.signature.who.reference = 'Practitioner/72';
+		SET OutputRoot.JSON.Data.signature.targetFormat = 'application/fhir+json';
+		SET OutputRoot.JSON.Data.signature.sigFormat = 'application/signature+json';
+		SET OutputRoot.JSON.Data.signature.data = InputRoot.JSON.Data.signature_data;
+		
+		SET OutputRoot.JSON.Data.composition = null;
+		SET OutputRoot.JSON.Data.signature_data = null;
+		
+
+		RETURN TRUE;
+	END;
+
+END MODULE;

@@ -1,0 +1,55 @@
+
+
+CREATE COMPUTE MODULE transferDBPatients2FHIR_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE i INTEGER 1;
+		DECLARE count INTEGER;
+		
+		SET count = CARDINALITY(InputRoot.JSON.Data.Data.*[]);
+		WHILE i <= count DO 
+
+			SET OutputRoot.JSON.Data.resourceType = 'Patient';	
+			SET OutputRoot.JSON.Data.(JSON.Array)identifier.Item[1].use = 'usual';
+			SET OutputRoot.JSON.Data.(JSON.Array)identifier.Item[1].type.(JSON.Array)coding.Item[1].system = 'http://terminology.hl7.org/CodeSystem/v2-0203';
+			SET OutputRoot.JSON.Data.(JSON.Array)identifier.Item[1].type.(JSON.Array)coding.Item[1].code = 'MR';
+			SET OutputRoot.JSON.Data.(JSON.Array)identifier.Item[1].system = 'urn:oid:0.1.2.3.4.5.6.7';
+			SET OutputRoot.JSON.Data.(JSON.Array)identifier.Item[1].value = InputRoot.JSON.Data.PIDNO;
+			
+			SET OutputRoot.JSON.Data.active = true;
+			SET OutputRoot.JSON.Data.(JSON.Array)name.Item[1].use = 'official';
+			SET OutputRoot.JSON.Data.(JSON.Array)name.Item[1].family = InputRoot.JSON.Data.PNAMEC;
+			SET OutputRoot.JSON.Data.(JSON.Array)name.Item[1].(JSON.Array)given.Item[1] = InputRoot.JSON.Data.PNAMEC;
+			
+			SET OutputRoot.JSON.Data.(JSON.Array)name.Item[2].use = 'official';
+			SET OutputRoot.JSON.Data.(JSON.Array)name.Item[2].family = InputRoot.JSON.Data.PNAME;
+			SET OutputRoot.JSON.Data.(JSON.Array)name.Item[2].(JSON.Array)given.Item[1] = InputRoot.JSON.Data.PNAME;
+			
+			SET OutputRoot.JSON.Data.gender = InputRoot.JSON.Data.PSEX;
+			SET OutputRoot.JSON.Data.birthDate = '1911-01-01';
+			SET OutputRoot.JSON.Data.(JSON.Array)telecom.Item[1].system = 'phone';
+			SET OutputRoot.JSON.Data.(JSON.Array)telecom.Item[1].value = InputRoot.JSON.Data.PPHONNO1;
+			SET OutputRoot.JSON.Data.(JSON.Array)telecom.Item[1].use = 'work';
+			SET OutputRoot.JSON.Data.(JSON.Array)telecom.Item[2].system = 'email';
+			SET OutputRoot.JSON.Data.(JSON.Array)telecom.Item[2].value = '123@gmail.com';
+			SET OutputRoot.JSON.Data.(JSON.Array)telecom.Item[2].use = 'work';
+			SET OutputRoot.JSON.Data.(JSON.Array)telecom.Item[3].system = 'fax';
+			SET OutputRoot.JSON.Data.(JSON.Array)telecom.Item[3].value = InputRoot.JSON.Data.PPHONNO2;
+			SET OutputRoot.JSON.Data.(JSON.Array)telecom.Item[3].use = 'work';
+			
+			SET OutputRoot.JSON.Data.(JSON.Array)address.Item[1].use = 'home';
+			SET OutputRoot.JSON.Data.(JSON.Array)address.Item[1].(JSON.Array)line.Item[1] = InputRoot.JSON.Data.PADDR1;
+			SET OutputRoot.JSON.Data.(JSON.Array)address.Item[1].city = '台北市';
+			SET OutputRoot.JSON.Data.(JSON.Array)address.Item[1].postalCode = InputRoot.JSON.Data.PPATZIP;
+			SET OutputRoot.JSON.Data.(JSON.Array)address.Item[1].country = 'TAIWAN, R.O.C.';
+	
+			PROPAGATE; 
+			SET i = i + 1; 
+		END WHILE; 
+
+
+		RETURN TRUE;
+	END;
+
+END MODULE;

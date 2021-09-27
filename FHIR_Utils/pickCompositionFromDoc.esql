@@ -1,0 +1,24 @@
+
+
+CREATE COMPUTE MODULE pickCompositionFromDoc
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot = InputRoot;
+		 
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.JSON.Data.entry.*[]);
+		X : WHILE I < J DO
+			IF InputRoot.JSON.Data.entry.[I].resource.resourceType = 'Composition' THEN
+				SET OutputRoot.JSON.Data.composition = InputRoot.JSON.Data.entry.[I];
+				LEAVE X;
+			END IF;
+			
+			SET I = I + 1;
+		END WHILE;
+		
+		
+		RETURN TRUE;
+	END;
+
+END MODULE;

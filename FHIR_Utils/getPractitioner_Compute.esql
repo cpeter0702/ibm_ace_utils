@@ -1,0 +1,11 @@
+
+
+CREATE COMPUTE MODULE getPractitioner_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET InputLocalEnvironment.Variables.Practitioner = InputRoot;
+		SET OutputRoot = InputRoot;
+		RETURN TRUE;
+	END;
+
+END MODULE;

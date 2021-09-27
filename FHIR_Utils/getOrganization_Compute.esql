@@ -1,0 +1,11 @@
+
+
+CREATE COMPUTE MODULE getOrganization_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET InputLocalEnvironment.Variables.Organization = InputRoot;
+		SET OutputRoot = InputRoot;
+		RETURN TRUE;
+	END;
+
+END MODULE;
