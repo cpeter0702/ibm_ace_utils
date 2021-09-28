@@ -7,8 +7,8 @@ CREATE COMPUTE MODULE getBundleDocument_Compute
 		SET OutputRoot.HTTPRequestHeader."Authorization" = 'Basic ZmhpcnVzZXI6Y2hhbmdlLXBhc3N3b3Jk';
 		SET OutputRoot.HTTPRequestHeader."Accept" = 'application/json';
 		SET OutputLocalEnvironment.Destination.HTTP.RequestURL 
-				= 'https://192.168.111.204:9443/fhir-server/api/v4/Bundle/' || InputRoot.JSON.Data.compositionId;
-				-- = 'https://192.168.111.204:9443/fhir-server/api/v4/Bundle/17c2616db98-4e0c7b34-3df2-429a-a8c8-7a11fa9150e2';
+				-- = 'https://192.168.111.204:9443/fhir-server/api/v4/Bundle/' || InputRoot.JSON.Data.compositionId;
+				= 'https://192.168.111.204:9443/fhir-server/api/v4/Bundle/17c2616db98-4e0c7b34-3df2-429a-a8c8-7a11fa9150e2';
 		
 		RETURN TRUE;
 	END;

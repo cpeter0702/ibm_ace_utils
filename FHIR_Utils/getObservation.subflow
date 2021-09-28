@@ -2,15 +2,15 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmHTTPHeader.msgnode="ComIbmHTTPHeader.msgnode" xmlns:ComIbmWSRequest.msgnode="ComIbmWSRequest.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="getObservation.subflow" nsPrefix="getObservation.subflow">
   <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
     <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
-    <translation xmi:type="utility:TranslatableString" key="getObservation" bundleName="getObservation" pluginId="CombineRequestsToJson"/>
-    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/CombineRequestsToJson/icons/full/obj16/getObservation.gif"/>
-    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/CombineRequestsToJson/icons/full/obj30/getObservation.gif"/>
+    <translation xmi:type="utility:TranslatableString" key="getObservation" bundleName="getObservation" pluginId="FHIR_Utils"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/FHIR_Utils/icons/full/obj16/getObservation.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/FHIR_Utils/icons/full/obj30/getObservation.gif"/>
     <composition>
       <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="10,20">
-        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="getObservation" pluginId="CombineRequestsToJson"/>
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="getObservation" pluginId="FHIR_Utils"/>
       </nodes>
       <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="558,11">
-        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="getObservation" pluginId="CombineRequestsToJson"/>
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="getObservation" pluginId="FHIR_Utils"/>
       </nodes>
       <nodes xmi:type="ComIbmHTTPHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="93,20" httpRequestHeader="Add">
         <translation xmi:type="utility:ConstantString" string="HTTP Header"/>

@@ -32,7 +32,7 @@ public class TestFlow_JavaCompute extends MbJavaComputeNode {
 
 			
 			RSAPrivateKey privateKey = cUtils.getPrivateKey(PRIVATEKEY_PEM_PATH);
-			
+			System.out.println("PeterLiaotesting");
 	        MbElement outRoot = outMessage.getRootElement();
 	        // Create the Broker Blob Parser element
 	        outRoot.getLastChild().getLastChild().createElementAsLastChild(MbElement.TYPE_NAME_VALUE, "privateKey", privateKey.getFormat());
