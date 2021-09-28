@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <policies>
   <policy policyType="JDBCProviders" policyName="DB2204Policy" policyTemplate="DB2_91_Windows">
-    <databaseName>FHIRDB</databaseName>
+    <databaseName>HISDB</databaseName>
     <databaseType>DB2 Universal Database</databaseType>
     <databaseVersion>11.1</databaseVersion>
     <type4DriverClassName>com.ibm.db2.jcc.DB2Driver</type4DriverClassName>
     <type4DatasourceClassName>com.ibm.db2.jcc.DB2XADataSource</type4DatasourceClassName>
-    <connectionUrlFormat>jdbc:db2://192.168.111.204:50000/FHIRDB:user=db2inst1;password=db2inst1;</connectionUrlFormat>
+    <connectionUrlFormat>jdbc:db2://192.168.111.204:50000/HISDB:user=db2inst1;password=db2inst1;</connectionUrlFormat>
     <connectionUrlFormatAttr1></connectionUrlFormatAttr1>
     <connectionUrlFormatAttr2></connectionUrlFormatAttr2>
     <connectionUrlFormatAttr3></connectionUrlFormatAttr3>
