@@ -33,7 +33,7 @@ public class TransferDBPatients2FHIR_JavaCompute extends MbJavaComputeNode {
 			try {
 				
 				// retrive data from db2
-				conn = getJDBCType4Connection("{MyPolicies}:DB2Policy", JDBC_TransactionType.MB_TRANSACTION_AUTO);
+				conn = getJDBCType4Connection("{MyPolicies}:DB2204Policy", JDBC_TransactionType.MB_TRANSACTION_AUTO);
 		        stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);	        
 		        inMessage.getRootElement().getLastChild().getFirstChild();	        
 		        rs = stmt.executeQuery("SELECT * FROM MYSCHEMA.PBASINFO");
